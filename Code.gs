@@ -22,13 +22,21 @@ function menuItem1() {
 
     var selection = DocumentApp.getActiveDocument().getSelection();
   
-  if (selection) {
-  var elements = selection.getRangeElements();
-  var selection = "Hello World!"
-} else {
-  DocumentApp.getUi().alert('Nothing is selected.');
-}
-  
+    var elements = selection.getRangeElements();
+    for (var i = 0; i < elements.length; i++) {
+      var element = elements[i].getElement();
+      var startOffset = elements[i].getStartOffset();
+      var endOffset = elements[i].getEndOffsetInclusive();
+      
+      if (element.editAsText) {
+        var text = element.asText();
+        text.deleteText(startOffset, endOffset);
+        text.insertText(startOffset, "Hello World!");
+      }
+      else {
+    DocumentApp.getUi().alert('Nothing is selected.');
+      } 
+    }
 }
 
 function menuItem2() {
