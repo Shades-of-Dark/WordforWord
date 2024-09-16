@@ -11,19 +11,20 @@ function onOpen(a) {
   var ui = DocumentApp.getUi();
   // Or DocumentApp, SlidesApp or FormApp.
   ui.createMenu('Debate')
-      .addItem('Highlight', 'menuItem1')
+      .addItem('Highlight', 'highlight') // creates ui
+      .addItem('Emphasis', 'emphasis')
       .addSeparator()
       .addSubMenu(ui.createMenu('Sub-menu')
-          .addItem('Second item', 'menuItem2'))
+          .addItem('Settings', 'setting'))
       .addToUi();
 
 
-function menuItem1() {
+function highlight() {
 
     var selection = DocumentApp.getActiveDocument().getSelection();
     
     var elements = selection.getRangeElements();
-    if (elements.length > 0){
+    if (selection){
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i].getElement();
       var startOffset = elements[i].getStartOffset();
@@ -32,11 +33,11 @@ function menuItem1() {
 
       if (element.editAsText) {
         var text = element.asText();
-        text.deleteText(startOffset, endOffset);
+
         var textElement = element;
-        text.insertText(startOffset, "Hello World!");
+
         var textStyle = {};
-        textStyle[DocumentApp.Attribute.BACKGROUND_COLOR] = '#FFFF00'; // Yellow highlight
+        textStyle[DocumentApp.Attribute.BACKGROUND_COLOR] = '#00FFFF'; // Yellow highlight
     
         textElement.setAttributes(startOffset, endOffset, textStyle);
       }
@@ -47,7 +48,31 @@ function menuItem1() {
    
 }
 
-function menuItem2() {
-  DocumentApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-     .alert('You clicked the second menu item!');
+function emphasis() {
+   var selection = DocumentApp.getActiveDocument().getSelection();
+    
+    var elements = selection.getRangeElements();
+    if (selection){
+    for (var i = 0; i < elements.length; i++) {
+      var element = elements[i].getElement();
+      var startOffset = elements[i].getStartOffset();
+      var endOffset = elements[i].getEndOffsetInclusive();
+         }
+
+      if (element.editAsText) {
+        var text = element.asText();
+ 
+        var textElement = element;
+     
+        var textStyle = {};
+        textStyle[DocumentApp.Attribute.BOLD] = true; // bold
+        textStyle[DocumentApp.Attribute.UNDERLINE] = true; // underline
+        textStyle[DocumentApp.Attribute.FONT_SIZE] = 13; // bigger
+        textElement.setAttributes(startOffset, endOffset, textStyle);
+      }
+    }
+      else {
+    DocumentApp.getUi().alert('Nothing is selected.');
+      } 
 }
+
